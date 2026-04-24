@@ -1,9 +1,9 @@
-import { useGLTF } from "@react-three/drei";
+import { useAnimations, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { useState, useMemo, useRef } from "react";
-import { useButtonControl } from "../../hooks/useButtonControl";
-import { useVector3Control } from "../../hooks/useVectorControl";
+import { useButtonControl } from "@/hooks/useButtonControl";
+import { useVector3Control } from "@/hooks/useVectorControl";
 
 type TrainParts = "head" | "horti";
 const presetPositions = {
@@ -21,15 +21,50 @@ const getPartName = (part: TrainParts) => {
 
 const speedFactor = 5;
 
+const playAnimationOnce = (
+  action: THREE.AnimationAction | null,
+  reverse: boolean = false,
+) => {
+  if (!action) return;
+  action.paused = false;
+  action.setLoop(THREE.LoopOnce, 1);
+  action.clampWhenFinished = true;
+  action.timeScale = reverse ? -1 : 1;
+  action.play();
+};
+
 export default function Train() {
+  const groupRef = useRef<THREE.Group>(null);
   const initializedRef = useRef<boolean>(false);
-  const { scene } = useGLTF("/models/train.glb");
+  const { animations, scene } = useGLTF("/models/train.glb");
+  const { names, actions } = useAnimations(animations, groupRef);
+
   const [focusedPart, setFocusedPart] = useState<TrainParts>("head");
   const presetCameraPos = presetPositions[focusedPart];
-
+  // debugging
   useButtonControl("Train Focus", [
     { name: "Head", fn: () => setFocusedPart("head") },
     { name: "Horti", fn: () => setFocusedPart("horti") },
+  ]);
+  useButtonControl("Train Animation - Horti", [
+    {
+      name: "Open",
+      fn: () => {
+        if (names.length > 0 && names.includes("HortiOpen")) {
+          const action = actions["HortiOpen"];
+          playAnimationOnce(action);
+        }
+      },
+    },
+    {
+      name: "Close",
+      fn: () => {
+        if (names.length > 0 && names.includes("HortiOpen")) {
+          const action = actions["HortiOpen"];
+          playAnimationOnce(action, true);
+        }
+      },
+    },
   ]);
   useVector3Control("Camera Position");
 
@@ -80,7 +115,7 @@ export default function Train() {
   });
 
   return (
-    <group>
+    <group ref={groupRef}>
       <primitive object={scene} />
     </group>
   );
