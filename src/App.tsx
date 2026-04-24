@@ -1,9 +1,10 @@
 import { Canvas } from "@react-three/fiber";
-import Scene from "./components/canvas/Scene";
+import Scene from "@/components/canvas/Scene";
+import { DEFAULT_FOV } from "@/components/canvas/config";
 function App() {
   return (
     <div className="w-full h-full">
-      <Canvas>
+      <Canvas camera={{ fov: DEFAULT_FOV }}>
         <Scene />
       </Canvas>
     </div>
