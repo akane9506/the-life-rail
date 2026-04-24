@@ -54,4 +54,27 @@ const focusOnObject = (
   state.camera.updateProjectionMatrix();
 };
 
-export { playAnimationOnce, focusOnObject };
+// Loop animations
+
+const playLoopAnimations = (
+  currentPart: "head" | "horti",
+  scene: THREE.Group,
+  delta: number,
+) => {
+  switch (currentPart) {
+    case "horti":
+      playHortiAnimation(scene, delta);
+      return;
+    default:
+      return;
+  }
+};
+
+const playHortiAnimation = (scene: THREE.Group, delta: number) => {
+  const fan = scene.getObjectByName("Fan");
+  const handle = scene.getObjectByName("Handle");
+  if (fan) fan.rotation.x += delta * 5;
+  if (handle) handle.rotation.z += delta * 5;
+};
+
+export { playAnimationOnce, focusOnObject, playLoopAnimations };

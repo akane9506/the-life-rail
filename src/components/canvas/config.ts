@@ -1,7 +1,7 @@
 const SPEED_FACTOR = 5;
 const ANIMATION_TIMESCALE = 2.0;
 const DEFAULT_FOV = 50;
-const CAMERA_Y_SHIFT = 2.5;
+const CAMERA_Y_SHIFT = 3.0;
 
 type CameraParams = {
   position: {
@@ -18,7 +18,7 @@ const PRESET_CAMERA_PARAMS: Record<string, CameraParams> = {
     fov: 45,
   },
   horti: {
-    position: { x: -8.5, y: 0.5, z: 0.0 },
+    position: { x: -12.5, y: 0.5, z: 0.0 },
     fov: 20,
   },
 };

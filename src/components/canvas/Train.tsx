@@ -3,7 +3,11 @@ import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { useState, useMemo, useRef } from "react";
 import { useButtonControl } from "@/hooks/useButtonControl";
-import { focusOnObject, playAnimationOnce } from "@/components/canvas/utils";
+import {
+  focusOnObject,
+  playAnimationOnce,
+  playLoopAnimations,
+} from "@/components/canvas/utils";
 import { PRESET_CAMERA_PARAMS, SPEED_FACTOR } from "@/components/canvas/config";
 
 type TrainParts = "head" | "horti";
@@ -64,6 +68,7 @@ export default function Train() {
       if (!body || !presetCameraPosition) return; // early return if model loading failed
       const lerpAlpha = delta * SPEED_FACTOR;
       targetCameraPosition.copy(presetCameraPosition);
+
       // update camera
       focusOnObject(
         state,
@@ -75,6 +80,11 @@ export default function Train() {
         lerpAlpha,
         initializedRef.current,
       );
+
+      // play/stop repeated animation
+      playLoopAnimations(focusedPart, scene, delta);
+
+      // should be at the end of the first frame, otherwise will cause strange transition
       if (!initializedRef.current) initializedRef.current = true;
     }
   });
