@@ -1,4 +1,5 @@
 import { useControls } from "leva";
+import { useEffect } from "react";
 
 type VectorControlOptions = {
   x?: number;
@@ -32,7 +33,7 @@ const useVector3Control = (name: string, options?: VectorControlOptions) => {
     options ? { ...DEFAULT_OPTIONS, ...options } : { ...DEFAULT_OPTIONS }
   ) as Vector3Params;
   const { x, y, z, value, min, max, step } = params;
-  const vector3Controls = useControls(name, {
+  const [vector3Controls, setControl] = useControls(name, () => ({
     x: {
       value: x ?? value,
       min,
@@ -51,7 +52,11 @@ const useVector3Control = (name: string, options?: VectorControlOptions) => {
       max,
       step,
     },
-  });
+  }));
+
+  useEffect(() => {
+    setControl({ x: x ?? value, y: y ?? value, z: z ?? value });
+  }, [x, y, z, value, setControl]);
   return vector3Controls;
 };
 

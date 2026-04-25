@@ -1,6 +1,6 @@
 import type { RootState } from "@react-three/fiber";
 import * as THREE from "three";
-import { ANIMATION_TIMESCALE, CAMERA_Y_SHIFT } from "./config";
+import { ANIMATION_TIMESCALE } from "./config";
 
 const playAnimationOnce = (
   action: THREE.AnimationAction | null,
@@ -18,6 +18,7 @@ const focusOnObject = (
   state: RootState,
   object: THREE.Object3D,
   targetCameraPos: THREE.Vector3,
+  targetCameraShifts: THREE.Vector3,
   objectWorldPos: THREE.Vector3,
   currentLookAt: THREE.Vector3,
   targetFov: number,
@@ -26,9 +27,9 @@ const focusOnObject = (
 ) => {
   object.getWorldPosition(objectWorldPos);
   const lookAtPosition = new THREE.Vector3(
-    objectWorldPos.x,
-    objectWorldPos.y + CAMERA_Y_SHIFT,
-    objectWorldPos.z,
+    objectWorldPos.x + targetCameraShifts.x,
+    objectWorldPos.y + targetCameraShifts.y,
+    objectWorldPos.z + targetCameraShifts.z,
   );
 
   // Update camera position and look at

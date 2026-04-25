@@ -5,7 +5,7 @@ export default function Scene() {
   return (
     <>
       <color attach="background" args={["beige"]} />
-      <Environment preset="forest" />
+      <Environment preset="city" environmentIntensity={0.5} colorSpace="srgb-linear" />
       <Train />
     </>
   );

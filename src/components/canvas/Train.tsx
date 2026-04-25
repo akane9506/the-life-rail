@@ -9,6 +9,7 @@ import {
   playLoopAnimations,
 } from "@/components/canvas/utils";
 import { PRESET_CAMERA_PARAMS, SPEED_FACTOR } from "@/components/canvas/config";
+import { useVector3Control } from "@/hooks/useVectorControl";
 
 type TrainParts = "head" | "horti";
 
@@ -28,15 +29,37 @@ export default function Train() {
   const { names, actions } = useAnimations(animations, groupRef);
 
   const [focusedPart, setFocusedPart] = useState<TrainParts>("head");
-  const { position: presetCameraPosition, fov: presetCameraFov } =
-    PRESET_CAMERA_PARAMS[focusedPart];
+  const [debuggingMode, setDebuggingMode] = useState<boolean>(false);
+  const {
+    position: presetCameraPosition,
+    fov: presetCameraFov,
+    shift: presetCameraShift,
+  } = PRESET_CAMERA_PARAMS[focusedPart];
 
   // debugging
-  useButtonControl("Train Focus", [
-    { name: "Head", fn: () => setFocusedPart("head") },
-    { name: "Horti", fn: () => setFocusedPart("horti") },
+  useButtonControl("Debugging", [
+    { name: "Toggle", fn: () => setDebuggingMode((prev) => !prev) },
   ]);
-  useButtonControl("Train Animation - Horti", [
+
+  const debuggingCameraPosition = useVector3Control("Camera Params.Position", {
+    x: presetCameraPosition.x,
+    y: presetCameraPosition.y,
+    z: presetCameraPosition.z,
+  });
+  const debuggingCameraShift = useVector3Control("Camera Params.Shift", {
+    x: presetCameraShift.x,
+    y: presetCameraShift.y,
+    z: presetCameraShift.z,
+    max: 10,
+    min: -10,
+  });
+
+  useButtonControl("Train.Focus", [
+    { name: "Head", fn: () => setFocusedPart("head") },
+    { name: "Horticulturist", fn: () => setFocusedPart("horti") },
+  ]);
+
+  useButtonControl("Train.Animation.Horticulturist", [
     {
       name: "Open",
       fn: () => {
@@ -60,6 +83,7 @@ export default function Train() {
   // use vec3 to keep track on camera params
   const objectWorldPosition = useMemo(() => new THREE.Vector3(), []);
   const targetCameraPosition = useMemo(() => new THREE.Vector3(), []);
+  const targetCameraShift = useMemo(() => new THREE.Vector3(), []);
   const currentLookAt = useMemo(() => new THREE.Vector3(), []);
 
   useFrame((state, delta) => {
@@ -67,13 +91,17 @@ export default function Train() {
       const body = scene.getObjectByName(getPartName(focusedPart));
       if (!body || !presetCameraPosition) return; // early return if model loading failed
       const lerpAlpha = delta * SPEED_FACTOR;
-      targetCameraPosition.copy(presetCameraPosition);
+      targetCameraPosition.copy(
+        debuggingMode ? debuggingCameraPosition : presetCameraPosition,
+      );
+      targetCameraShift.copy(debuggingMode ? debuggingCameraShift : presetCameraShift);
 
       // update camera
       focusOnObject(
         state,
         body,
         targetCameraPosition,
+        targetCameraShift,
         objectWorldPosition,
         currentLookAt,
         presetCameraFov,
