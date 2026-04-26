@@ -30,7 +30,7 @@ const PRESET_CAMERA_PARAMS: Record<string, CameraParams> = {
     fov: 30,
   },
   horti: {
-    position: { x: -12.5, y: 0.5, z: 0.0 },
+    position: { x: -12.5, y: 1.1, z: 0.0 },
     shift: { x: 0, y: 3.0, z: 0 },
     fov: 20,
   },

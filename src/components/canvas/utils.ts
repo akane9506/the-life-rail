@@ -1,7 +1,9 @@
-import type { RootState } from "@react-three/fiber";
 import * as THREE from "three";
-import { ANIMATION_TIMESCALE } from "./config";
+import type { RootState } from "@react-three/fiber";
+import type { TrainParts } from "@/atoms/trainAtoms";
+import { ANIMATION_TIMESCALE } from "@/components/canvas/config";
 
+// Animation controls
 const playAnimationOnce = (
   action: THREE.AnimationAction | null,
   reverse: boolean = false,
@@ -25,13 +27,11 @@ const focusOnObject = (
   lerpAlpha: number,
   initialized: boolean,
 ) => {
-  object.getWorldPosition(objectWorldPos);
   const lookAtPosition = new THREE.Vector3(
     objectWorldPos.x + targetCameraShifts.x,
     objectWorldPos.y + targetCameraShifts.y,
     objectWorldPos.z + targetCameraShifts.z,
   );
-
   // Update camera position and look at
   targetCameraPos.applyMatrix4(object.matrixWorld);
   // check if camera position initialized
@@ -47,7 +47,6 @@ const focusOnObject = (
     currentLookAt.lerp(lookAtPosition, lerpAlpha);
   }
   state.camera.lookAt(currentLookAt);
-
   // Update camera fov
   if (!(state.camera instanceof THREE.PerspectiveCamera)) return;
   if (!initialized) state.camera.fov = targetFov;
@@ -55,10 +54,8 @@ const focusOnObject = (
   state.camera.updateProjectionMatrix();
 };
 
-// Loop animations
-
 const playLoopAnimations = (
-  currentPart: "head" | "horti",
+  currentPart: TrainParts,
   scene: THREE.Group,
   delta: number,
 ) => {
@@ -78,9 +75,8 @@ const playHortiLoopAnimation = (scene: THREE.Group, delta: number) => {
   if (handle) handle.rotation.z += delta * 5;
 };
 
-// Open/close animations
-const playHortiOpenAnimation = (
-  currentPart: "head" | "horti",
+const playHortiOpenCloseAnimation = (
+  currentPart: TrainParts,
   action: THREE.AnimationAction,
 ) => {
   if (!action) return;
@@ -91,4 +87,42 @@ const playHortiOpenAnimation = (
   }
 };
 
-export { playAnimationOnce, focusOnObject, playLoopAnimations, playHortiOpenAnimation };
+// Train Object
+const getCollectionName = (part: TrainParts) => {
+  switch (part) {
+    case "horti":
+      return "Horticulturist";
+    case "head":
+      return "TrainHead";
+    default:
+      return "";
+  }
+};
+
+const getPartName = (part: TrainParts) => {
+  switch (part) {
+    case "horti":
+      return "HortiBody";
+    default:
+      return "HeadBody";
+  }
+};
+
+const getAnimationName = (part: TrainParts) => {
+  switch (part) {
+    case "horti":
+      return "HortiOpen";
+    default:
+      return "";
+  }
+};
+
+export {
+  playAnimationOnce,
+  focusOnObject,
+  getCollectionName,
+  getPartName,
+  getAnimationName,
+  playLoopAnimations,
+  playHortiOpenCloseAnimation,
+};
