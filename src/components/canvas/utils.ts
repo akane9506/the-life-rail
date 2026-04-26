@@ -64,18 +64,31 @@ const playLoopAnimations = (
 ) => {
   switch (currentPart) {
     case "horti":
-      playHortiAnimation(scene, delta);
+      playHortiLoopAnimation(scene, delta);
       return;
     default:
       return;
   }
 };
 
-const playHortiAnimation = (scene: THREE.Group, delta: number) => {
+const playHortiLoopAnimation = (scene: THREE.Group, delta: number) => {
   const fan = scene.getObjectByName("Fan");
   const handle = scene.getObjectByName("Handle");
   if (fan) fan.rotation.x += delta * 5;
   if (handle) handle.rotation.z += delta * 5;
 };
 
-export { playAnimationOnce, focusOnObject, playLoopAnimations };
+// Open/close animations
+const playHortiOpenAnimation = (
+  currentPart: "head" | "horti",
+  action: THREE.AnimationAction,
+) => {
+  if (!action) return;
+  if (currentPart === "horti") {
+    playAnimationOnce(action);
+  } else {
+    playAnimationOnce(action, true);
+  }
+};
+
+export { playAnimationOnce, focusOnObject, playLoopAnimations, playHortiOpenAnimation };
