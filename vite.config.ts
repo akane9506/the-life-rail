@@ -11,4 +11,26 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          groups: [
+            {
+              name: "three-core",
+              test: /node_modules[\\/]three/,
+            },
+            {
+              name: "r3f-vendors",
+              test: /node_modules[\\/]@react-three/,
+            },
+            {
+              name: "debug-vendors",
+              test: /node_modules[\\/](leva|r3f-perf)[\\/]/,
+            },
+          ],
+        },
+      },
+    },
+  },
 });

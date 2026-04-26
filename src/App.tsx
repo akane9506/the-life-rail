@@ -4,7 +4,7 @@ import { DEFAULT_FOV } from "@/components/canvas/config";
 function App() {
   return (
     <div className="w-full h-full">
-      <Canvas camera={{ fov: DEFAULT_FOV }}>
+      <Canvas camera={{ fov: DEFAULT_FOV }} shadows>
         <Scene />
       </Canvas>
     </div>

@@ -1,4 +1,4 @@
-import { useAnimations, useGLTF } from "@react-three/drei";
+import { useAnimations, useGLTF, useHelper } from "@react-three/drei";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { useState, useMemo, useRef } from "react";
@@ -30,12 +30,21 @@ export default function Train() {
   const orbitControlMode = useAtomValue(orbitControlAtom);
   const { animations, scene } = useGLTF("/models/train.glb");
 
+  const focusedRoot = scene.getObjectByName("Horticulturist");
+  focusedRoot?.traverse((obj) => {
+    if (obj instanceof THREE.Mesh) {
+      obj.castShadow = true;
+      obj.receiveShadow = true;
+    }
+  });
+
   const [focusedPart, setFocusedPart] = useState<TrainParts>("head");
   const initializedRef = useRef<boolean>(false);
   const groupRef = useRef<THREE.Group>(null);
+  const spotLightRef = useRef<THREE.SpotLight>(null);
   const { names, actions } = useAnimations(animations, groupRef);
 
-  // use vec3 to keep track on camera params
+  // use memoed vec3s to keep track on camera params
   const objectWorldPosition = useMemo(() => new THREE.Vector3(), []);
   const targetCameraPosition = useMemo(() => new THREE.Vector3(), []);
   const targetCameraShift = useMemo(() => new THREE.Vector3(), []);
@@ -66,21 +75,37 @@ export default function Train() {
     { name: "Horticulturist", fn: () => setFocusedPart("horti") },
   ]);
 
+  useHelper(
+    debuggingMode && (spotLightRef as React.RefObject<THREE.SpotLight>),
+    THREE.SpotLightHelper,
+    4,
+  );
+
   useFrame((state, delta) => {
     if (scene) {
-      const body = scene.getObjectByName(getPartName(focusedPart));
-      if (!body || !presetCameraPosition) return; // early return if model loading failed
+      const target = scene.getObjectByName(getPartName(focusedPart));
+      if (!target || !presetCameraPosition) return; // early return if model loading failed
       const lerpAlpha = delta * SPEED_FACTOR;
       targetCameraPosition.copy(
         debuggingMode ? debuggingCameraPosition : presetCameraPosition,
       );
       targetCameraShift.copy(debuggingMode ? debuggingCameraShift : presetCameraShift);
 
+      if (spotLightRef.current) {
+        spotLightRef.current.position.copy(objectWorldPosition); //bug in orbit control mode
+        spotLightRef.current.position.x -= 8;
+        spotLightRef.current.position.y += 11;
+        spotLightRef.current.target.position.copy(objectWorldPosition);
+        spotLightRef.current.target.position.x += 1;
+        spotLightRef.current.target.position.y += 1;
+        spotLightRef.current.target.updateMatrixWorld();
+      }
+
       // update camera
       if (!orbitControlMode) {
         focusOnObject(
           state,
-          body,
+          target,
           targetCameraPosition,
           targetCameraShift,
           objectWorldPosition,
@@ -108,6 +133,16 @@ export default function Train() {
   return (
     <group ref={groupRef}>
       <primitive object={scene} />
+      <spotLight
+        ref={spotLightRef}
+        castShadow
+        args={["#ffffff"]}
+        distance={20}
+        angle={Math.PI / 9}
+        intensity={400}
+        shadow-mapSize={[1024, 1024]}
+        shadow-bias={-0.001}
+      />
     </group>
   );
 }

@@ -23,7 +23,7 @@ export default function CustomizedEnv() {
   const timeRef = useRef<number>(-0.1); // we start from the dawn
   const prevTRef = useRef<number>(0);
   const sunAngleRef = useRef<number>(0);
-  const sunRef = useRef<THREE.DirectionalLight>(null);
+  const sunLightRef = useRef<THREE.DirectionalLight>(null);
 
   // Manual controls
   const envBgColors = useControls({
@@ -43,7 +43,7 @@ export default function CustomizedEnv() {
 
   // SunLight Helper
   useHelper(
-    debuggingMode && (sunRef as React.RefObject<THREE.DirectionalLight>),
+    debuggingMode && (sunLightRef as React.RefObject<THREE.DirectionalLight>),
     THREE.DirectionalLightHelper,
     4,
     "coral",
@@ -55,17 +55,18 @@ export default function CustomizedEnv() {
       ? currT
       : (Math.sin(timeRef.current * Math.PI * 2) + 1.0) / 2.0;
     const t = THREE.MathUtils.smoothstep(rawT, 0.3, 0.7);
-
-    // calculate sun angle
+    // tDelta helps transform dark-bright transition to day-night (sun-raise-set) loop
     const tDelta = Math.abs(t - prevTRef.current);
     sunAngleRef.current = (sunAngleRef.current + tDelta) % 2;
     prevTRef.current = t;
-    // sun position control
-    if (sunRef.current) {
+
+    // calculate sun angle
+    if (sunLightRef.current) {
       const angle = sunAngleRef.current * Math.PI - Math.PI / 2;
-      sunRef.current.position.set(-20, Math.sin(angle) * 30, Math.cos(angle) * 30);
-      sunRef.current.intensity = THREE.MathUtils.lerp(0, 1.5, Math.max(0, t));
+      sunLightRef.current.position.set(-20, Math.sin(angle) * 30, Math.cos(angle) * 30);
+      sunLightRef.current.intensity = THREE.MathUtils.lerp(0, 1.5, Math.max(0, t));
     }
+
     // environment intensity control
     if (scene instanceof THREE.Scene && scene.environmentIntensity) {
       const envIntensity = THREE.MathUtils.lerp(
@@ -75,12 +76,13 @@ export default function CustomizedEnv() {
       );
       scene.environmentIntensity = envIntensity;
       const isRaising = sunAngleRef.current < 1;
-      sunRef.current?.color.lerpColors(
+      sunLightRef.current?.color.lerpColors(
         isRaising ? NIGHT_SUN_COLOR : DUSK_SUN_COLOR,
         DAY_SUN_COLOR,
         t,
       );
     }
+
     // BG color control
     bgColor.lerpColors(
       new THREE.Color(envBgColors.night),
@@ -95,7 +97,7 @@ export default function CustomizedEnv() {
     <>
       <color attach="background" args={[bgColor]} />
       <Environment preset="city" environmentIntensity={0.5} colorSpace="srgb-linear" />
-      <directionalLight ref={sunRef} castShadow intensity={0} />
+      <directionalLight ref={sunLightRef} intensity={0} />
     </>
   );
 }

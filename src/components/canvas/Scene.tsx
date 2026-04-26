@@ -4,6 +4,7 @@ import { useButtonControl } from "@/hooks/useButtonControl";
 import Train from "@/components/canvas/Train";
 import CustomizedEnv from "./CustomizedEnv";
 import { OrbitControls } from "@react-three/drei";
+import { Perf } from "r3f-perf";
 
 export default function Scene() {
   const [debuggingMode, setDebuggingMode] = useAtom(debuggingModeAtom);
@@ -21,6 +22,7 @@ export default function Scene() {
       {orbitControlMode && <OrbitControls enableDamping={false} />}
       <CustomizedEnv />
       <Train />
+      <Perf position="bottom-right" />
     </>
   );
 }
