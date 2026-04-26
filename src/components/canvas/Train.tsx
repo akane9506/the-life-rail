@@ -10,6 +10,8 @@ import {
 } from "@/components/canvas/utils";
 import { PRESET_CAMERA_PARAMS, SPEED_FACTOR } from "@/components/canvas/config";
 import { useVector3Control } from "@/hooks/useVectorControl";
+import { useAtomValue } from "jotai";
+import { debuggingModeAtom } from "@/atoms/canvasAtoms";
 
 type TrainParts = "head" | "horti";
 
@@ -28,18 +30,14 @@ export default function Train() {
   const { animations, scene } = useGLTF("/models/train.glb");
   const { names, actions } = useAnimations(animations, groupRef);
 
+  const debuggingMode = useAtomValue(debuggingModeAtom);
+
   const [focusedPart, setFocusedPart] = useState<TrainParts>("head");
-  const [debuggingMode, setDebuggingMode] = useState<boolean>(false);
   const {
     position: presetCameraPosition,
     fov: presetCameraFov,
     shift: presetCameraShift,
   } = PRESET_CAMERA_PARAMS[focusedPart];
-
-  // debugging
-  useButtonControl("Debugging", [
-    { name: "Toggle", fn: () => setDebuggingMode((prev) => !prev) },
-  ]);
 
   const debuggingCameraPosition = useVector3Control("Camera Params.Position", {
     x: presetCameraPosition.x,

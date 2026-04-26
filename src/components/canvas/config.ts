@@ -1,5 +1,11 @@
+import * as THREE from "three";
+
+// Animation
 const SPEED_FACTOR = 5;
 const ANIMATION_TIMESCALE = 2.0;
+const DAY_LENGTH = 25;
+
+// Camera
 const DEFAULT_FOV = 50;
 const CAMERA_Y_SHIFT = 3.0;
 
@@ -30,10 +36,25 @@ const PRESET_CAMERA_PARAMS: Record<string, CameraParams> = {
   },
 };
 
+// Environment
+const DAY_BG = new THREE.Color("#e5dcd5");
+const NIGHT_BG = new THREE.Color("#101927");
+const DAY_SUN_COLOR = new THREE.Color("#fff5e0");
+const DUSK_SUN_COLOR = new THREE.Color("#ff6a00");
+const NIGHT_SUN_COLOR = new THREE.Color("#1a1a4a");
+const ENV_INTENSITIES = [0.05, 0.8];
+
 export {
-  SPEED_FACTOR,
-  DEFAULT_FOV,
   ANIMATION_TIMESCALE,
-  PRESET_CAMERA_PARAMS,
   CAMERA_Y_SHIFT,
+  DAY_BG,
+  DAY_LENGTH,
+  DAY_SUN_COLOR,
+  DEFAULT_FOV,
+  DUSK_SUN_COLOR,
+  ENV_INTENSITIES,
+  NIGHT_BG,
+  NIGHT_SUN_COLOR,
+  PRESET_CAMERA_PARAMS,
+  SPEED_FACTOR,
 };
