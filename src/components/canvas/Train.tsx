@@ -14,7 +14,7 @@ import {
   getCollectionName,
   getPartName,
   playLoopAnimations,
-  playHortiOpenCloseAnimation,
+  playGardenOpenCloseAnimation,
 } from "@/components/canvas/utils";
 import { PRESET_CAMERA_PARAMS, SPEED_FACTOR } from "@/components/canvas/config";
 import TrainStageLights from "./TrainStageLights";
@@ -23,7 +23,6 @@ export default function Train() {
   const debuggingMode = useAtomValue(debuggingModeAtom);
   const orbitControlMode = useAtomValue(orbitControlAtom);
   const { animations, scene } = useGLTF("/models/train.glb");
-
   const [focusedPart, setFocusedPart] = useAtom(trainFocusAtom);
   // refs store the object information
   const initializedRef = useRef<boolean>(false);
@@ -60,7 +59,7 @@ export default function Train() {
   });
   useButtonControl("Train.Focus", [
     { name: "Head", fn: () => setFocusedPart("head") },
-    { name: "Horticulturist", fn: () => setFocusedPart("horti") },
+    { name: "Garden", fn: () => setFocusedPart("garden") },
   ]);
 
   // update the target object, shadow, and spotlight position when focused part changes
@@ -119,9 +118,9 @@ export default function Train() {
 
     // =========== NEED TO BETTER REFACTOR THIS PART ========
     if (names.length > 0) {
-      const action = actions[getAnimationName("horti")];
+      const action = actions[getAnimationName("garden")];
       if (action) {
-        playHortiOpenCloseAnimation(focusedPart, action);
+        playGardenOpenCloseAnimation(focusedPart, action);
       }
     }
     // =========== NEED TO BETTER REFACTOR ABOVE PART ========

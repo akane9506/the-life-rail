@@ -1,5 +1,4 @@
 import { useAtom } from "jotai";
-import { Perf } from "r3f-perf";
 import { OrbitControls } from "@react-three/drei";
 import { debuggingModeAtom, orbitControlAtom } from "@/atoms/canvasAtoms";
 import { useButtonControl } from "@/hooks/useButtonControl";
@@ -22,7 +21,6 @@ export default function Scene() {
       {orbitControlMode && <OrbitControls enableDamping={false} />}
       <WorldEnvironment />
       <Train />
-      <Perf position="bottom-right" />
     </>
   );
 }

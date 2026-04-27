@@ -5,7 +5,7 @@ import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js
 import { useFrame } from "@react-three/fiber";
 import { useHelper } from "@react-three/drei";
 import { folder, useControls } from "leva";
-import type { TrainParts } from "@/atoms/trainAtoms";
+import type { TrainParts } from "@/consts/chapters";
 import { debuggingModeAtom } from "@/atoms/canvasAtoms";
 import { useScalarControl } from "@/hooks/useScalarControl";
 import { useVector3Control } from "@/hooks/useVectorControl";
@@ -165,7 +165,7 @@ export default function TrainStageLights({
     : STAGE_AREALIGHT_PARAMS.intensity;
 
   useFrame((_, delta) => {
-    const alpha = delta * 0.5; // controls transition speed
+    const alpha = delta * 4; // controls transition speed
     // light intensity transition
     currentSpotIntensityRef.current = enableStageLight
       ? THREE.MathUtils.lerp(currentSpotIntensityRef.current, spotlightIntensity, alpha)

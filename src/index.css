@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: oklch(32.856% 0.06132 243.812);
+}
+
 #root {
   width: 100dvw;
   height: 100dvh;
+  color: var(--color-primary);
 }

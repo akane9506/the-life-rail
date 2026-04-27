@@ -1,8 +1,6 @@
 import { atom } from "jotai";
-
-type TrainParts = "head" | "horti";
+import type { TrainParts } from "@/consts/chapters";
 
 const trainFocusAtom = atom<TrainParts>("head");
 
 export { trainFocusAtom };
-export type { TrainParts };

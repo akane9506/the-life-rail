@@ -34,7 +34,7 @@ const PRESET_CAMERA_PARAMS: Record<string, CameraParams> = {
     shift: { x: -1, y: 2.6, z: 0 },
     fov: 30,
   },
-  horti: {
+  garden: {
     position: { x: -12.5, y: 1.1, z: 0.0 },
     shift: { x: 0, y: 3.0, z: 0 },
     fov: 20,
@@ -46,7 +46,7 @@ const STAGE_SPOTLIGHT_PARAMS: LightParams = {
   shift: { x: -8, y: 11, z: 0 },
   targetShift: { x: 1, y: 1, z: 0 },
   color: "#fff6e1",
-  intensity: 480,
+  intensity: 510,
 };
 const STAGE_AREALIGHT_PARAMS: LightParams = {
   shift: { x: -3, y: 0, z: 0 },

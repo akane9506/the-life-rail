@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import type { RootState } from "@react-three/fiber";
-import type { TrainParts } from "@/atoms/trainAtoms";
+import type { TrainParts } from "@/consts/chapters";
 import { ANIMATION_TIMESCALE } from "@/components/canvas/config";
 
 // Animation controls
@@ -60,27 +60,27 @@ const playLoopAnimations = (
   delta: number,
 ) => {
   switch (currentPart) {
-    case "horti":
-      playHortiLoopAnimation(scene, delta);
+    case "garden":
+      playGardenLoopAnimation(scene, delta);
       return;
     default:
       return;
   }
 };
 
-const playHortiLoopAnimation = (scene: THREE.Group, delta: number) => {
+const playGardenLoopAnimation = (scene: THREE.Group, delta: number) => {
   const fan = scene.getObjectByName("Fan");
   const handle = scene.getObjectByName("Handle");
   if (fan) fan.rotation.x += delta * 5;
   if (handle) handle.rotation.z += delta * 5;
 };
 
-const playHortiOpenCloseAnimation = (
+const playGardenOpenCloseAnimation = (
   currentPart: TrainParts,
   action: THREE.AnimationAction,
 ) => {
   if (!action) return;
-  if (currentPart === "horti") {
+  if (currentPart === "garden") {
     playAnimationOnce(action);
   } else {
     playAnimationOnce(action, true);
@@ -90,8 +90,8 @@ const playHortiOpenCloseAnimation = (
 // Train Object
 const getCollectionName = (part: TrainParts) => {
   switch (part) {
-    case "horti":
-      return "Horticulturist";
+    case "garden":
+      return "Garden";
     case "head":
       return "TrainHead";
     default:
@@ -101,8 +101,8 @@ const getCollectionName = (part: TrainParts) => {
 
 const getPartName = (part: TrainParts) => {
   switch (part) {
-    case "horti":
-      return "HortiBody";
+    case "garden":
+      return "GardenBody";
     default:
       return "HeadBody";
   }
@@ -110,8 +110,8 @@ const getPartName = (part: TrainParts) => {
 
 const getAnimationName = (part: TrainParts) => {
   switch (part) {
-    case "horti":
-      return "HortiOpen";
+    case "garden":
+      return "GardenOpen";
     default:
       return "";
   }
@@ -124,5 +124,5 @@ export {
   getPartName,
   getAnimationName,
   playLoopAnimations,
-  playHortiOpenCloseAnimation,
+  playGardenOpenCloseAnimation,
 };
