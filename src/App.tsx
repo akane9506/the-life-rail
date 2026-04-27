@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import "@/i18n/config";
 import { Canvas } from "@react-three/fiber";
 import { Leva } from "leva";
 import { Perf } from "r3f-perf";

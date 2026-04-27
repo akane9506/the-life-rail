@@ -2,6 +2,7 @@
 
 @theme {
   --color-primary: oklch(32.856% 0.06132 243.812);
+  --color-bg: #e5dcd5;
 }
 
 #root {

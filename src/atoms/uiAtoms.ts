@@ -1,8 +1,11 @@
 import { CHAPTERS } from "@/consts/chapters";
 import { atom } from "jotai";
 import { trainFocusAtom } from "./trainAtoms";
+import { type Language } from "@/consts/app-config";
+import i18n from "@/i18n/config";
 
 const chapterAtom = atom(0);
+const languageAtom = atom<Language>("en");
 
 const setChapterAtom = atom(null, (_, set, chapter: number) => {
   const chapterLength = CHAPTERS.length;
@@ -11,4 +14,9 @@ const setChapterAtom = atom(null, (_, set, chapter: number) => {
   set(trainFocusAtom, CHAPTERS[nextChapter].cargo);
 });
 
-export { chapterAtom, setChapterAtom };
+const setLanguageAtom = atom(null, (_, set, language: Language) => {
+  i18n.changeLanguage(language);
+  set(languageAtom, language);
+});
+
+export { chapterAtom, languageAtom, setChapterAtom, setLanguageAtom };

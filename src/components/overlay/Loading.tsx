@@ -1,21 +1,25 @@
 import { useProgress } from "@react-three/drei";
 import Button from "../ui/Button";
+import LanguageSwitch from "./LanguageSwitch";
+import { useTranslation } from "react-i18next";
 
 type LoadingProps = {
   onEnter: () => void;
 };
 
 export default function Loading({ onEnter }: LoadingProps) {
+  const { t } = useTranslation();
   const { progress, errors } = useProgress();
   if (errors.length !== 0) {
     console.error(errors);
   }
   const loadComplete = progress === 100;
   return (
-    <div className="absolute z-10 top-0 left-0 w-full h-full bg-white/90 flex flex-col gap-4 items-center justify-center">
-      <h1 className="text-3xl tracking-wide">The Life Rail</h1>
+    <div className="absolute z-10 top-0 left-0 w-full h-full bg-bg/90 flex flex-col gap-4 items-center justify-center">
+      <h1 className="text-3xl tracking-wide">{t("loading.title")}</h1>
+      <LanguageSwitch />
       {/* Progress bar */}
-      <div className="h-6">
+      <div className="h-6 flex items-center">
         {!loadComplete && (
           <div className="relative w-60 h-full rounded-full shadow bg-primary/30 overflow-hidden">
             <div
@@ -29,10 +33,10 @@ export default function Loading({ onEnter }: LoadingProps) {
         )}
         {loadComplete && (
           <Button
-            className="bg-primary/80 not-disabled:hover:bg-primary text-white font-normal px-2 w-40"
+            className="bg-primary/80 not-disabled:hover:bg-primary text-white font-normal px-2 w-60"
             onClick={onEnter}
           >
-            Enter
+            {t("loading.enter")}
           </Button>
         )}
       </div>

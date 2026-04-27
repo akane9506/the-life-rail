@@ -1,0 +1,10 @@
+{
+  "loading": {
+    "title": "The Life Rail",
+    "enter": "Start Journey"
+  },
+    "nav": {
+      "head": "0 - Intro",
+      "garden": "1 - Garden"
+    }
+}

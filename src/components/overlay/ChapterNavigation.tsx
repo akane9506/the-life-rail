@@ -4,8 +4,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { CHAPTERS } from "@/consts/chapters";
 import { chapterAtom, setChapterAtom } from "@/atoms/uiAtoms";
 import Button from "@/components/ui/Button";
+import { useTranslation } from "react-i18next";
 
 export default function ChapterNavigation() {
+  const { t } = useTranslation();
   const reversedChapters = useMemo(() => [...CHAPTERS].reverse(), []);
   const currChapter = useAtomValue(chapterAtom);
   const setCurrChapter = useSetAtom(setChapterAtom);
@@ -34,7 +36,7 @@ export default function ChapterNavigation() {
         >
           {reversedChapters.map((chapter) => (
             <div key={chapter.cargo} className="min-w-full text-center">
-              {chapter.title}
+              {t(`nav.${chapter.cargo}`)}
             </div>
           ))}
         </div>
