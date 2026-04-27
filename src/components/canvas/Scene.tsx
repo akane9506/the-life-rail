@@ -1,10 +1,10 @@
 import { useAtom } from "jotai";
+import { Perf } from "r3f-perf";
+import { OrbitControls } from "@react-three/drei";
 import { debuggingModeAtom, orbitControlAtom } from "@/atoms/canvasAtoms";
 import { useButtonControl } from "@/hooks/useButtonControl";
 import Train from "@/components/canvas/Train";
-import CustomizedEnv from "./CustomizedEnv";
-import { OrbitControls } from "@react-three/drei";
-import { Perf } from "r3f-perf";
+import WorldEnvironment from "@/components/canvas/WorldEnvironment";
 
 export default function Scene() {
   const [debuggingMode, setDebuggingMode] = useAtom(debuggingModeAtom);
@@ -20,7 +20,7 @@ export default function Scene() {
     <>
       {debuggingMode && <axesHelper args={[10]} />}
       {orbitControlMode && <OrbitControls enableDamping={false} />}
-      <CustomizedEnv />
+      <WorldEnvironment />
       <Train />
       <Perf position="bottom-right" />
     </>

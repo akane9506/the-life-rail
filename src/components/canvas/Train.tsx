@@ -1,11 +1,11 @@
 import { useMemo, useRef, useEffect } from "react";
 import * as THREE from "three";
-import { useFrame } from "@react-three/fiber";
 import { useControls, folder } from "leva";
 import { useAtom, useAtomValue } from "jotai";
+import { useFrame } from "@react-three/fiber";
+import { useAnimations, useGLTF } from "@react-three/drei";
 import { trainFocusAtom } from "@/atoms/trainAtoms";
 import { debuggingModeAtom, orbitControlAtom } from "@/atoms/canvasAtoms";
-import { useAnimations, useGLTF, useHelper } from "@react-three/drei";
 import { useButtonControl } from "@/hooks/useButtonControl";
 import { useVector3Control } from "@/hooks/useVectorControl";
 import {
@@ -17,6 +17,7 @@ import {
   playHortiOpenCloseAnimation,
 } from "@/components/canvas/utils";
 import { PRESET_CAMERA_PARAMS, SPEED_FACTOR } from "@/components/canvas/config";
+import TrainStageLights from "./TrainStageLights";
 
 export default function Train() {
   const debuggingMode = useAtomValue(debuggingModeAtom);
@@ -28,7 +29,6 @@ export default function Train() {
   const initializedRef = useRef<boolean>(false);
   const groupRef = useRef<THREE.Group>(null);
   const targetObjectRef = useRef<THREE.Object3D>(null);
-  const spotLightRef = useRef<THREE.SpotLight>(null);
   // animation mixer
   const { names, actions } = useAnimations(animations, groupRef);
 
@@ -63,12 +63,6 @@ export default function Train() {
     { name: "Horticulturist", fn: () => setFocusedPart("horti") },
   ]);
 
-  useHelper(
-    debuggingMode && (spotLightRef as React.RefObject<THREE.SpotLight>),
-    THREE.SpotLightHelper,
-    4,
-  );
-
   // update the target object, shadow, and spotlight position when focused part changes
   useEffect(() => {
     if (!scene) return;
@@ -94,15 +88,6 @@ export default function Train() {
     }
     targetObjectRef.current = target;
     target.getWorldPosition(objectWorldPosition);
-    if (spotLightRef.current) {
-      spotLightRef.current.position.copy(objectWorldPosition); //bug in orbit control mode
-      spotLightRef.current.position.x -= 8;
-      spotLightRef.current.position.y += 11;
-      spotLightRef.current.target.position.copy(objectWorldPosition);
-      spotLightRef.current.target.position.x += 1;
-      spotLightRef.current.target.position.y += 1;
-      spotLightRef.current.target.updateMatrixWorld();
-    }
   }, [scene, focusedPart, objectWorldPosition]);
 
   useFrame((state, delta) => {
@@ -148,15 +133,9 @@ export default function Train() {
   return (
     <group ref={groupRef}>
       <primitive object={scene} />
-      <spotLight
-        ref={spotLightRef}
-        castShadow
-        args={["#ffffff"]}
-        distance={20}
-        angle={Math.PI / 9}
-        intensity={400}
-        shadow-mapSize={[1024, 1024]}
-        shadow-bias={-0.001}
+      <TrainStageLights
+        focusedPart={focusedPart}
+        objectWorldPosition={objectWorldPosition}
       />
     </group>
   );
