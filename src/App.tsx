@@ -5,10 +5,14 @@ import { Perf } from "r3f-perf";
 import Scene from "@/components/canvas/Scene";
 import { DEFAULT_FOV } from "@/components/canvas/config";
 import Interaction from "@/components/overlay/Interaction";
+import Loading from "./components/overlay/Loading";
+import { useState } from "react";
 
 const debug = window.location.hash === "#debug";
 
 function App() {
+  const [entered, setEntered] = useState<boolean>(false);
+  const enterApp = () => setEntered(true);
   return (
     <div className="w-full h-full">
       <Leva hidden={!debug} />
@@ -16,7 +20,8 @@ function App() {
         <Scene />
         {debug && <Perf position="bottom-right" />}
       </Canvas>
-      <Interaction />
+      {!entered && <Loading onEnter={enterApp} />}
+      {entered && <Interaction />}
     </div>
   );
 }
