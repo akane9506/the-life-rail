@@ -1,10 +1,10 @@
 import { useRef, useMemo } from "react";
 import { folder, useControls } from "leva";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useAtom } from "jotai";
 import * as THREE from "three";
 import { Environment, useHelper } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { debuggingModeAtom } from "@/atoms/canvasAtoms";
+import { debuggingModeAtom, envBgAtom } from "@/atoms/canvasAtoms";
 import {
   DAY_BG,
   NIGHT_BG,
@@ -22,6 +22,7 @@ import { trainFocusAtom } from "@/atoms/trainAtoms";
 export default function WorldEnvironment() {
   const debuggingMode = useAtomValue(debuggingModeAtom);
   const focusedPart = useAtomValue(trainFocusAtom);
+  const [envBg, setEnvBg] = useAtom(envBgAtom);
   const dimEnv = focusedPart !== "head";
 
   // Refs for the day-night transition
@@ -105,6 +106,8 @@ export default function WorldEnvironment() {
     dayBgColor.lerpColors(dayColor, dayDimColor, dimTRef.current);
     bgColor.lerpColors(nightBgColor, dayBgColor, t);
     state.scene.background = bgColor;
+    if (t < 0.1 && envBg !== "dark") setEnvBg("dark");
+    if (t > 0.1 && envBg !== "light") setEnvBg("light");
 
     // finally update the time ref
     timeRef.current = (timeRef.current + delta / DAY_LENGTH) % 1;

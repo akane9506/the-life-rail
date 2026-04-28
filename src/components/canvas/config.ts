@@ -30,7 +30,7 @@ const DAY_LENGTH = 25;
 const DEFAULT_FOV = 50;
 const PRESET_CAMERA_PARAMS: Record<string, CameraParams> = {
   head: {
-    position: { x: 15.1, y: 12.6, z: 12.7 },
+    position: { x: 15.1, y: 7.4, z: 12.7 },
     shift: { x: -1, y: 2.6, z: 0 },
     fov: 30,
   },

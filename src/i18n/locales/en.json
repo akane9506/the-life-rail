@@ -4,8 +4,11 @@
     "enter": "Start Journey",
     "description": "The project <bold>The Reminiscent</bold> originated years ago from my reading of <link1>John Hejduk’s</link1> <link2>Victims</link2>. That was an conceptual architectural project intended to be realized over thirty years, a monumental tribute to the ordinary souls who perished across turbulent eras. My aspiration is to transpose the scenes described in the book into a series of train carriages. As the train moves slowly forward, it carries those obscure, long-forgotten memories — departing from the old days, traversing the present, and journeying into the depths of eternity."
   },
-    "nav": {
-      "head": "0 - Intro",
-      "garden": "1 - Garden"
-    }
+  "nav": {
+    "head": "0 - Intro",
+    "garden": "1 - Garden"
+  },
+  "chapters": {
+    "head": "April 2026, while browsing my bookshelf, I came across a sketchbook I used to carry with me back in 2018. In the top-right corner of those ten or so pages of rough sketches, the title I had written then remained: \"John Hejduk - Victims.\" At that time, relying on the book's descriptions and my own imagination, I had used simple lines to draw the scenes of these ordinary lives. Looking at them, a thought arises: rather than leaving them on paper to gather dust on a shelf or be lost during some future move, why not move them into the carriages of a tram? Let the train carry these forgotten memories, departing from the page and traveling to wherever the network can reach."
+  }
 }
