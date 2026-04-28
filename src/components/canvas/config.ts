@@ -24,14 +24,14 @@ type LightParams = {
 // Animation
 const SPEED_FACTOR = 5;
 const ANIMATION_TIMESCALE = 2.0;
-const DAY_LENGTH = 25;
+const DAY_LENGTH = 18;
 
 // Camera
 const DEFAULT_FOV = 50;
 const PRESET_CAMERA_PARAMS: Record<string, CameraParams> = {
   head: {
     position: { x: 15.1, y: 7.4, z: 12.7 },
-    shift: { x: -1, y: 2.6, z: 0 },
+    shift: { x: -2.2, y: 2.6, z: 0.6 },
     fov: 30,
   },
   garden: {
