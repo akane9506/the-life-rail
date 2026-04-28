@@ -9,7 +9,7 @@ export default function LanguageSwitch() {
   const setLanguage = useSetAtom(setLanguageAtom);
   const activeIndex = LANGUAGE_LIST.findIndex((lan) => lan.value === currLanguage);
   return (
-    <div className="relative flex items-center px-1 h-8 bg-white/50 rounded-full">
+    <div className="relative flex items-center px-1 h-8 bg-white/50 rounded-full shadow">
       {LANGUAGE_LIST.map((lan, index) => (
         <div
           onClick={() => setLanguage(lan.value as Language)}

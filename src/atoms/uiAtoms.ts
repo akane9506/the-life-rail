@@ -17,6 +17,7 @@ const setChapterAtom = atom(null, (_, set, chapter: number) => {
 const setLanguageAtom = atom(null, async (_, set, language: Language) => {
   await i18n.changeLanguage(language);
   document.title = i18n.t("loading.title");
+  document.documentElement.lang = language;
   set(languageAtom, language);
 });
 

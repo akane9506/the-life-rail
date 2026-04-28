@@ -2,7 +2,7 @@
   "loading": {
     "title": "The Reminiscent",
     "enter": "Start Journey",
-    "description": "The project \"The Reminiscent\" originated years ago from my reading of John Hejduk’s Victims. That was an conceptual architectural project intended to be realized over thirty years, a monumental tribute to the ordinary souls who perished across turbulent eras. My aspiration is to transpose the scenes described in the book into a series of train carriages. As the train moves slowly forward, it carries those obscure, long-forgotten memories — departing from the old days, traversing the present, and journeying into the depths of eternity."
+    "description": "The project <bold>The Reminiscent</bold> originated years ago from my reading of <link1>John Hejduk’s</link1> <link2>Victims</link2>. That was an conceptual architectural project intended to be realized over thirty years, a monumental tribute to the ordinary souls who perished across turbulent eras. My aspiration is to transpose the scenes described in the book into a series of train carriages. As the train moves slowly forward, it carries those obscure, long-forgotten memories — departing from the old days, traversing the present, and journeying into the depths of eternity."
   },
     "nav": {
       "head": "0 - Intro",

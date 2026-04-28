@@ -35,7 +35,7 @@ export default function ChapterNavigation() {
           style={{ transform: `translateX(-${currFocus * 100}%)` }}
         >
           {reversedChapters.map((chapter) => (
-            <div key={chapter.cargo} className="min-w-full text-center">
+            <div key={chapter.cargo} className="min-w-full text-center font-medium">
               {t(`nav.${chapter.cargo}`)}
             </div>
           ))}
