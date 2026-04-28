@@ -14,8 +14,9 @@ const setChapterAtom = atom(null, (_, set, chapter: number) => {
   set(trainFocusAtom, CHAPTERS[nextChapter].cargo);
 });
 
-const setLanguageAtom = atom(null, (_, set, language: Language) => {
-  i18n.changeLanguage(language);
+const setLanguageAtom = atom(null, async (_, set, language: Language) => {
+  await i18n.changeLanguage(language);
+  document.title = i18n.t("loading.title");
   set(languageAtom, language);
 });
 
